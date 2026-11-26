@@ -26,7 +26,7 @@ class SigApp extends StatelessWidget {
    dividerColor:const Color(0xffdddddd),
    appBarTheme:const AppBarTheme(backgroundColor:Colors.white,surfaceTintColor:Colors.transparent,foregroundColor:accent),
    textTheme:const TextTheme(bodyLarge:TextStyle(fontSize:18,height:1.45),bodyMedium:TextStyle(fontSize:18,height:1.45),titleLarge:TextStyle(fontSize:24,fontWeight:FontWeight.w600),titleMedium:TextStyle(fontSize:19,fontWeight:FontWeight.w600)),
-   outlinedButtonTheme:OutlinedButtonThemeData(style:OutlinedButton.styleFrom(minimumSize:const Size(48,52),foregroundColor:accent,alignment:Alignment.centerLeft,textStyle:const TextStyle(fontSize:17,color:entry.key==2?accent:Colors.black87))),
+   outlinedButtonTheme:OutlinedButtonThemeData(style:OutlinedButton.styleFrom(minimumSize:const Size(48,52),foregroundColor:accent,alignment:Alignment.centerLeft,textStyle:const TextStyle(fontSize:17))),
    filledButtonTheme:FilledButtonThemeData(style:FilledButton.styleFrom(minimumSize:const Size(48,52),backgroundColor:accent,textStyle:const TextStyle(fontSize:17)))),
   home:const Home());
 }
@@ -106,7 +106,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver{
    const LinkButton(Icons.calendar_month_outlined,'Gebetskalender der Moschee',calendarUrl),
    const LinkButton(Icons.language,'Quelle: FIDS Oberuzwil',fidsUrl)];
  }
- TableRow prayerRow(String a,String b,String c,{bool header=false})=>TableRow(children:[for(final entry in [a,b,c].asMap().entries)Padding(padding:const EdgeInsets.symmetric(vertical:14,horizontal:2),child:Text(entry.value,style:TextStyle(fontWeight:header||entry.key==2?FontWeight.bold:FontWeight.normal,fontSize:17)))]);
+ TableRow prayerRow(String a,String b,String c,{bool header=false})=>TableRow(children:[for(final entry in [a,b,c].asMap().entries)Padding(padding:const EdgeInsets.symmetric(vertical:14,horizontal:2),child:Text(entry.value,style:TextStyle(fontWeight:header||entry.key==2?FontWeight.bold:FontWeight.normal,fontSize:17,color:entry.key==2?accent:Colors.black87)))]);
  List<Widget> about()=>[
   const Heading('Schweizerische Islamische Gemeinschaft Oberuzwil'),const Text(intro),
   const Heading(S.contact),const Text(address),const Text(phone),const Text(email),...contactActions(),
