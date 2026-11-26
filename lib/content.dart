@@ -18,7 +18,7 @@ const team=<String,List<(String,String)>>{
 class S {
  static const tabs=['Start','Gebete','Über uns','Mitglied','Spenden'];
  static const app='SIG Oberuzwil';
- static const test='Interne Testversion · ohne Live-Daten';
+ static const test='Interne Testversion';
  static const missing='Noch keine Angaben veröffentlicht';
  static const noTimes='Noch keine Zeiten veröffentlicht';
  static const next='Nächstes Gebet in der Moschee';

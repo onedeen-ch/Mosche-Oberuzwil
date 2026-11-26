@@ -19,3 +19,6 @@ iOS: bash scripts/bootstrap.sh erzeugt auch die iOS-Projektstruktur. Auf macOS m
 
 ## Weitere Umsetzung nach Designfreigabe
 Backend und sichere Admin-Rollen, serverseitige Regeln, Bild-Uploads, zentraler Kalenderimport mit Vorschau, Freitagszeiten, News- und Push-Verwaltung, Änderungs-Synchronisierung und Cache mit Aktualisierungszeitpunkt, TWINT-Verifikation, Übersetzungsdateien für alle verbleibenden UI-Texte, Gerätetests (insbesondere grosse Schrift, Telefon/Mail/Karten), Store-Signing. CSV-Schema und validierende Kalenderlogik sowie Datenzugriffsschnittstelle bereits vorbereitet. Testdaten nur in automatisierten Tests; keine offiziellen Zeiten simuliert. Die lokalen Inhalte funktionieren ohne Internet, externe Links benötigen eine Verbindung.
+
+## V0.2.0
+Gebetsbeginn: öffentlicher FIDS-Kalender https://fids.ch/gebetszeiten/oberuzwil/ (nur Oberuzwil, keine GPS-Berechtigung), Abruf bei Start und Datumwechsel, manueller Refresh und Cache. HTML-Format kann sich ändern; keine Ersatzberechnung. Für Freigabe automatischen Abruf auf Geräten und Zustimmung zur Quelle prüfen. Iqama separat und bis zur Admin-Einrichtung leer. Besucher bleiben ohne Konto; Push für Neuigkeiten und Admin-Anmeldung erst mit Backend. Team in eigener Unterseite. Design orientiert sich an den freigegebenen Mockups, ohne dort erfundene Beispiele zu übernehmen.
