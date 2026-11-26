@@ -22,3 +22,6 @@ Backend und sichere Admin-Rollen, serverseitige Regeln, Bild-Uploads, zentraler 
 
 ## V0.2.0
 Gebetsbeginn: öffentlicher FIDS-Kalender https://fids.ch/gebetszeiten/oberuzwil/ (nur Oberuzwil, keine GPS-Berechtigung), Abruf bei Start und Datumwechsel, manueller Refresh und Cache. HTML-Format kann sich ändern; keine Ersatzberechnung. Für Freigabe automatischen Abruf auf Geräten und Zustimmung zur Quelle prüfen. Iqama separat und bis zur Admin-Einrichtung leer. Besucher bleiben ohne Konto; Push für Neuigkeiten und Admin-Anmeldung erst mit Backend. Team in eigener Unterseite. Design orientiert sich an den freigegebenen Mockups, ohne dort erfundene Beispiele zu übernehmen.
+
+## V0.3.0
+Sichtbares Design-Update: dunkelgrüne App-Leiste und Gebets-Hauptkarte, hellgrüne Flächen für wichtige Informationen und Aktionen, markierter aktiver Reiter. Grün #07513B als angenäherter SIG-Farbton; exakter offizieller Farbwert noch unbestätigt. Kein Firebase und keine Änderungen an der Datenlogik. Keine Veröffentlichung.
