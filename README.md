@@ -25,3 +25,6 @@ Gebetsbeginn: öffentlicher FIDS-Kalender https://fids.ch/gebetszeiten/oberuzwil
 
 ## V0.3.0
 Sichtbares Design-Update: dunkelgrüne App-Leiste und Gebets-Hauptkarte, hellgrüne Flächen für wichtige Informationen und Aktionen, markierter aktiver Reiter. Grün #07513B als angenäherter SIG-Farbton; exakter offizieller Farbwert noch unbestätigt. Kein Firebase und keine Änderungen an der Datenlogik. Keine Veröffentlichung.
+
+## V0.4.0 – Lokaler Admin-Test
+Über uns → Verwaltung – Testzugang. Öffentlich dokumentierter, nicht geheimer Test-PIN 2468. Nur zur UI-Probe: lokale Textbeiträge anlegen, bearbeiten, anheften, Ablaufdatum setzen, löschen. Beiträge bleiben nach Neustart auf demselben Handy gespeichert und sind als lokale Testbeiträge markiert. Beim Verlassen der Verwaltung Abmeldung. Kein produktives Login, keine sichere Backend-Autorisierung, keine Synchronisierung, kein Push und kein Bildupload. Demo-Modul und PIN vor produktiver Freigabe entfernen; durch serverseitig geschützte Admin-Anmeldung ersetzen.

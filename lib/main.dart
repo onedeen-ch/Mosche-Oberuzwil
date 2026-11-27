@@ -9,6 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'content.dart';
 import 'prayer.dart';
 import 'fids_calendar.dart';
+import 'demo_admin.dart';
 
 const accent=Color(0xff07513b);
 const paleGreen=Color(0xffe8f3ed);
@@ -54,6 +55,12 @@ class Home extends StatefulWidget{
 }
 class _HomeState extends State<Home> with WidgetsBindingObserver{
  int tab=0;Timer? timer;final FidsRepository repo=FidsRepository();
+ final DemoPostStore demo=DemoPostStore();
+ Future<void> openAdmin() async {
+  await Navigator.push(context,MaterialPageRoute(builder:(_)=>DemoAdminPage(store:demo)));
+  demo.logout();
+  if(mounted)setState(()=>tab=0);
+ }
  String? requestedDay;
  Future<void> refresh({bool force=false}) async {
   final day=dateKey(nowZurich());
@@ -63,7 +70,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver{
   await repo.refresh();
   if(mounted)setState((){});
  }
- @override void initState(){super.initState();WidgetsBinding.instance.addObserver(this);timer=Timer.periodic(const Duration(seconds:30),(_){if(mounted){refresh();if(tab==1)setState((){});}});WidgetsBinding.instance.addPostFrameCallback((_)=>refresh());}
+ @override void initState(){super.initState();WidgetsBinding.instance.addObserver(this);timer=Timer.periodic(const Duration(seconds:30),(_){if(mounted){refresh();if(tab==1)setState((){});}});WidgetsBinding.instance.addPostFrameCallback((_)=>refresh());demo.load().then((_) {if(mounted)setState((){});});}
  @override void didChangeAppLifecycleState(AppLifecycleState state){if(state==AppLifecycleState.resumed&&mounted){setState((){});refresh();}}
  @override void dispose(){timer?.cancel();WidgetsBinding.instance.removeObserver(this);super.dispose();}
  @override Widget build(BuildContext context){
@@ -92,7 +99,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver{
   );
  }
  List<Widget> feed(){
-  final posts=visiblePosts(repo.posts,nowZurich());
+  final posts=visiblePosts([...repo.posts,...demo.posts],nowZurich());
   return [
    const Heading(S.news),
    if(posts.isEmpty)...[
@@ -150,7 +157,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver{
   const Divider(height:36),
   SectionLink(Icons.groups_outlined,'Vorstand und Team',()=>Navigator.push(context,MaterialPageRoute(builder:(_)=>const TeamPage()))),
   const SizedBox(height:24),OutlinedButton(onPressed:()=>Navigator.push(context,MaterialPageRoute(builder:(_)=>const InfoPage())),child:const Text(S.info)),
-  TextButton(onPressed:()=>Navigator.push(context,MaterialPageRoute(builder:(_)=>const AdminPage())),child:const Text(S.admin))
+  SectionLink(Icons.admin_panel_settings_outlined,'Verwaltung – Testzugang',openAdmin)
  ];
  List<Widget> membership()=>[const Heading(S.membership),Container(padding:const EdgeInsets.all(20),decoration:BoxDecoration(color:paleGreen,borderRadius:BorderRadius.circular(16)),child:const Text(S.membershipText)),
   for(final title in S.memberDetails)...[Padding(padding:const EdgeInsets.only(top:16),child:Text(title,style:const TextStyle(fontWeight:FontWeight.w600))),const Text(S.missing,style:TextStyle(color:Colors.black54,fontSize:16)),const Divider(height:24)],
@@ -168,6 +175,7 @@ class _PostTileState extends State<PostTile>{
  @override Widget build(BuildContext context){
  final p=widget.post;final links=RegExp(r'https?://[^\s]+').allMatches(p.body).map((m)=>m.group(0)!).toSet();
  return Column(crossAxisAlignment:CrossAxisAlignment.start,children:[
+  const Padding(padding:EdgeInsets.only(bottom:8),child:Text('Lokaler Testbeitrag',style:TextStyle(fontSize:14,color:accent,fontWeight:FontWeight.w600))),
   if(p.pinned)const Text('Angeheftet',style:TextStyle(color:accent,fontSize:15)),
   Row(children:[Image.network(logoUrl,height:40,width:40,errorBuilder:(_,__,___)=>const SizedBox(width:40)),const SizedBox(width:10),Expanded(child:Column(crossAxisAlignment:CrossAxisAlignment.start,children:[const Text(S.app,style:TextStyle(fontWeight:FontWeight.bold)),Text(DateFormat('dd.MM.yyyy HH:mm').format(p.created.toLocal()),style:const TextStyle(fontSize:14))]))]),
   if(p.title.isNotEmpty)Heading(p.title),Text(!expanded&&p.body.length>350?'${p.body.substring(0,350)}…':p.body),
@@ -177,15 +185,11 @@ class _PostTileState extends State<PostTile>{
   const Divider(height:32)]);
  }
 }
-class AdminPage extends StatelessWidget{
- const AdminPage({super.key});
- @override Widget build(BuildContext context)=>Scaffold(appBar:AppBar(title:const Text(S.admin)),body:ListView(padding:const EdgeInsets.all(18),children:const [Heading('Noch nicht eingerichtet'),Text(S.adminDisabled),Heading('Geplant'),Text('Nur vorab berechtigte Administratoren erhalten eine Anmeldung. Besucher benötigen kein Konto. Der Vorstand pflegt die Moscheezeiten unabhängig vom FIDS-Gebetsbeginn. Push-Mitteilungen ausschliesslich für Neuigkeiten nach Zustimmung; keine Gebetserinnerungen.')]));
-}
 class InfoPage extends StatelessWidget{
  const InfoPage({super.key});
  @override Widget build(BuildContext context)=>Scaffold(appBar:AppBar(title:const Text('App-Informationen')),body:ListView(padding:const EdgeInsets.all(18),children:const [
-  Heading('Datenschutz'),Text('Interne Testversion ohne Benutzerkonto, Standortberechtigung, Werbung, Werbetracking oder Firebase. Die Gemeindeinformationen sind lokal enthalten. Die App lädt den öffentlichen FIDS-Gebetskalender ausschliesslich für Oberuzwil über das Internet. Dabei wird die übliche IP-Adresse an den Anbieter übertragen. Externe Links öffnen andere Anwendungen. Die endgültigen Anbieter- und Datenschutzhinweise müssen vor Veröffentlichung freigegeben werden.'),
-  Heading('Gemeinschaft'),Text('Schweizerische Islamische Gemeinschaft Oberuzwil'),Text(address),Heading('Version'),Text('0.3.0 – interne Testversion'),
+  Heading('Datenschutz'),Text('Interne Testversion ohne Benutzerkonto, Standortberechtigung, Werbung, Werbetracking oder Firebase. Die Gemeindeinformationen und Testbeiträge sind lokal enthalten. Der Testzugang ist keine echte Authentifizierung; Beiträge werden nicht an andere Geräte übertragen. Die App lädt den öffentlichen FIDS-Gebetskalender ausschliesslich für Oberuzwil über das Internet. Dabei wird die übliche IP-Adresse an den Anbieter übertragen. Externe Links öffnen andere Anwendungen. Die endgültigen Anbieter- und Datenschutzhinweise müssen vor Veröffentlichung freigegeben werden.'),
+  Heading('Gemeinschaft'),Text('Schweizerische Islamische Gemeinschaft Oberuzwil'),Text(address),Heading('Version'),Text('0.4.0 – interne Testversion'),
   LinkButton(Icons.language,S.openWeb,website)]));
 }
 
